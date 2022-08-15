@@ -1,0 +1,99 @@
+<!-- Menu -->
+<section class="menu container mx-auto py-8">
+    <h1 id="menu" class="text-xl font-bold mb-8">All Cakes & Cookies</h1>
+    <!-- Error -->
+    <% if(messages.error) { %>
+        <span class="text-red-500 bg-red-100 text-xl p-2 mb-2 inline-block"><%= messages.error %></span>
+    <% } %>
+    <% if(messages.success) { %>
+        <span class="text-red-500 bg-green-100 text-xl p-2 mb-2 inline-block"><%= messages.success %></span>
+    <% } %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 col-gap-12 row-gap-16">
+        
+        <div class="w-full md:w-64 rounded-lg shadow-lg tracking-wide border border-blue p-4 text-center">
+            <label class="text-l font-bold text-red-900">Add New Item</label>
+            <form method="POST"> 
+               <div class="container-img-upload">
+                   <img class="img-upload h-40 mb-4 mx-auto cursor-pointer block rounded" src="/img/admin/select-img.png" alt="" id="img1">
+                   
+                   <div class="overlay">
+                       <label onchange="showPreview(event)">
+                           <i class="fa fa-plus-circle fa-sm" title="Product's Image">
+                               <input type="file"  name="itemImage" accept="image/*" class="hidden">
+                           </i>
+                       </label>
+                   </div>
+               </div>
+
+               <div class="text-center">
+                   <input type="text" name="itemName" id="itemName" value="<%= messages.itemName %>" placeholder="Product's Name" title="Product's Name" class="text-center mb-4 focus:outline-none focus:shadow-outline rounded px-2 text-sm" onClick="this.setSelectionRange(0, this.value.length)">
+                   <input type="text" name="itemSize" id="itemSize" value="<%= messages.itemSize %>" placeholder="Product's Small Description" title="Product's Small Description" class="text-center size focus:outline-none focus:shadow-outline rounded px-2 text-sm xs-small" onClick="this.setSelectionRange(0, this.value.length)">
+                   <div class="flex items-center justify-around mt-6">
+                       <span class="mr-2">₹ </span><input type="text" name="itemPrice" id="itemPrice" value="<%= messages.itemPrice %>" placeholder="Product's Price" title="Product's Cost" class="font-bold text-sm w-1/2 focus:outline-none focus:shadow-outline rounded px-2" onClick="this.setSelectionRange(0, this.value.length)">
+                       <span class="flex items-center font-bold">
+                           <button type="submit" formaction="/admin/add" formenctype="multipart/form-data" class="menu-save ml-4 rounded-full qty-bt" title="Update Product"><i class="fa fa-save fa-lg"></i></button>
+                       </span>
+                   </div>
+               </div>
+            </form> 
+       </div>
+
+        <!-- fetching menu temp eng -->
+        <% items.forEach(function(item){ %>
+                <div class="w-full md:w-64 rounded-lg shadow-lg tracking-wide border border-blue p-4">
+                 <form method="POST"> 
+                    <div class="container-img-upload">
+                        <img class="img-upload h-40 mb-4 mx-auto cursor-pointer block rounded" src="/img/<%= (item.image) ? item.image : 'admin/image-not-available.jpg' %>" alt="" id="img2">
+                        
+                        <div class="overlay">
+                            <label onchange="showPreview1(event)">
+                                <i class="fa fa-pencil fa-sm" title="Product's Image">
+                                    <input type="file" name="itemImage" accept="image/*" class="hidden">
+                                </i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <input type="text" name="itemName" value="<%= item.name %>" placeholder="Product's Name" title="Product's Name" class="text-center mb-4 focus:outline-none focus:shadow-outline rounded px-2 text-sm" onClick="this.setSelectionRange(0, this.value.length)">
+                        <input type="text" name="itemSize" value="<%= item.size %>" placeholder="Product's Small Description" title="Product's Small Description" class="text-center size focus:outline-none focus:shadow-outline rounded px-2 xs-small" onClick="this.setSelectionRange(0, this.value.length)">
+                        <input type="hidden" name="itemId" value="<%= item._id %>">
+                        <div class="flex items-center justify-around mt-6">
+                            <span class="mr-2">₹ </span><input type="text" name="itemPrice" value="<%= item.price %>" placeholder="Product's Price" title="Product's Cost" class="font-bold text-lg w-1/2 focus:outline-none focus:shadow-outline rounded px-2" onClick="this.setSelectionRange(0, this.value.length)">
+                            <span class="flex items-center font-bold">
+                                <button type="submit" formaction="/admin/update" formenctype="multipart/form-data" class="menu-save ml-4 rounded-full qty-bt" title="Update Product"><i class="fa fa-save fa-lg"></i></button>
+                                <% if(item.available) { %>
+                                    <button type="submit" formaction="/admin/lock" class="ml-4 rounded-full qty-bt" title="Lock Product"><i class="fa fa-lock fa-lg"></i></button>
+                                <% }else{ %>
+                                    <button type="submit" formaction="/admin/unlock" class="ml-4 rounded-full qty-bt" title="Unlock Product"><i class="fa fa-unlock fa-lg"></i></button>
+                                <% } %>
+                                <button type="submit" formaction="/admin/delete" class="ml-4 rounded-full qty-bt" title="Delete Product"><i class="fa fa-trash fa-lg"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                 </form> 
+            </div>
+        <% }) %>
+
+    </div>
+</section>
+
+<script>
+    function showPreview(event) {
+        if(event.target.files.length > 0) {
+            let src = URL.createObjectURL(event.target.files[0]);
+            let preview = document.getElementById('img1');
+            preview.src = src;
+            preview.style.display = "block";
+        }
+    }
+    function showPreview1(event) {
+        if(event.target.files.length > 0) {
+            let src = URL.createObjectURL(event.target.files[0]);
+            let preview = document.getElementById('img2');
+            preview.src = src;
+            preview.style.display = "block";
+        }
+    }
+</script>

@@ -1,0 +1,66 @@
+    <!-- Hero Section -->
+    <section class="hero py-16">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="w-1/2">
+                <h6 class="text-lg"><em>Are you hungary <strong class="red_size"><%= user ? user.name : '' %></strong> ?</em></h6>
+                <h1 class="text-3xl md:text-6xl font-bold">Don't Wait !</h1>
+                <a href="#menu" class="red_size"><button class="px-6 py-2 rounded-full text-white font-bold mt-4 btn-primary qty-bt">Order Now</button></a>
+            </div class="w-1/2">
+            <div>
+                <img src="/img/admin/cake.png" alt="">
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="men" class="menu container mx-auto py-8">
+        <h1 id="menu" class="text-xl font-bold mb-8">All Cakes & Cookies</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 col-gap-12 row-gap-16">
+            
+            <!-- fetching menu temp eng -->
+            <% items.forEach(function(item){ if(item.available){ %>
+                <div class="w-full md:w-64 rounded-lg shadow-lg tracking-wide border border-blue p-4">
+                    <img class="h-40 mb-4 mx-auto" src="/img/<%= (item.image) ? item.image : '/admin/image-not-available.jpg' %>" alt="">
+                    <div class="text-center">
+                        <h2 class="mb-4 text-lg rounded"><%= item.name %></h2>
+                        <span class="size py-1 px-4 rounded-full uppercase xs-small"><%= item.size %></span>
+                        <div class="flex items-center justify-around mt-6">
+                            <span class="font-bold text-lg">₹ <%= item.price %></span>
+                            <button data-item="<%= JSON.stringify(item) %>" class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                                <span>+</span>
+                                <span class="ml-4">Add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>                
+            <% } }) %>
+
+        </div>
+    </section>
+
+    <button class="scrollUp qty-bt" onclick="topFunction()">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+<script>
+let w = parseInt(window.innerWidth);
+
+if(w > 615){
+const scrollUp = document.querySelector('.scrollUp')
+window.addEventListener('scroll', () => {
+    if(window.pageYOffset > 100){
+    scrollUp.classList.add('active')
+}else{
+    scrollUp.classList.remove('active')
+    $(window).scrollTop(0)
+}
+})
+
+function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+}
+}
+
+
+</script>
